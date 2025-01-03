@@ -56,8 +56,10 @@ export class HttpErrorsCodeComponent implements OnInit {
   }
 
   public changeTab(index: number, tab: string) {
+    this.statusCodesDataClone.forEach(item => item.activeTab = '');
     this.statusCodesDataClone[index].activeTab = tab;
   }
+  
 
   ngOnInit(): void {
     this.getDataFromHttpResponses()

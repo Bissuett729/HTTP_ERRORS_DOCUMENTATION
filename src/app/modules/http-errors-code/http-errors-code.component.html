@@ -6,9 +6,9 @@
         </div>
     </section>
 
-    <section class="w-full grid grid-cols-1 md:grid-cols-3 gap-2 p-4">
+    <section class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         @for (statusCode of statusCodesDataClone; track $index) {
-            <div class="col-span-1 image"> 
+            <div class="col-span-1 image transform hover:-translate-y-1 transition-[translate] duration-300 hover:shadow-menuActive"> 
                 <div class="flex items-center justify-between px-3 py-2">
                     <span class="text-white/80 text-4xl font-medium">{{statusCode.code}}</span>
                     <span [style.background]="statusCode.color" class="px-3 py-1 rounded-xl text-base text-white/70">{{statusCode.type}}</span>
@@ -35,6 +35,12 @@
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 22v-2" /><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /><path d="M20 17h2" /><path d="M2 7h2" /><path d="M7 2v2" /></svg>
                         Recursos
                     </button>
+                    @if (statusCode.note != '') {
+                        <button [ngClass]="{ 'border-b border-b-primary': statusCode.activeTab === 'info' }" (click)="changeTab($index, 'info')"  class="flex items-center gap-2 text-white/80 hover:text-primary px-2 py-1">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 22v-2" /><path d="M9 15l6 -6" /><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" /><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" /><path d="M20 17h2" /><path d="M2 7h2" /><path d="M7 2v2" /></svg>
+                            Información
+                        </button>
+                    }
                 </div>
 
                 @if (statusCode.activeTab === 'state') {
@@ -47,11 +53,11 @@
                 }
                 @if (statusCode.withExample && statusCode.activeTab === 'example') {
                     <div class="flex flex-col gap-2 p-4 text-white">
-                        <div class="flex flex-col bg-[#252525] rounded-lg p-2">
+                        <div class="flex flex-col bg-[#252525] rounded-lg p-2 overflow-x-auto">
                             <span class="text-sm border-b border-b-[#494949] py-1 px-2">HTTP - request</span>
                             <pre class="p-2 text-xs">{{ statusCode.example }}</pre>
                         </div>
-                        <div class="flex flex-col bg-[#252525] rounded-lg p-2">
+                        <div class="flex flex-col bg-[#252525] rounded-lg p-2 overflow-x-auto">
                             <span class="text-sm border-b border-b-[#494949] py-1 px-2">HTTP - response</span>
                             <pre class="p-2 text-xs">{{ statusCode.exampleResponse }}</pre>
                         </div>
@@ -65,6 +71,13 @@
                                 <a [href]="resource.url" target="_blank" class="text-wrap">{{resource.name}}</a>
                             </div>
                         }
+                    </div>
+                }
+                @if (statusCode.note != '' && statusCode.activeTab === 'info') {
+                    <div class="p-4">
+                        <div [style.background]="statusCode.deprecated ? '#ff00003d' : '#0078ff3d'" class="p-1 rounded-lg">
+                            <span class="text-xs"><span class="font-medium text-sm">{{ statusCode.deprecated ? 'Obsoleto:' : 'Nota:' }}</span> {{ statusCode.note }}</span>
+                        </div>
                     </div>
                 }
 
